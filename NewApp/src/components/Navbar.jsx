@@ -11,7 +11,7 @@ function NavbarFront() {
     // { path: "/liste-user-genjour", icon: "💰", label: "Générer Par jours Salaire" },
     { path: "/gen-salaire-alea", icon: "🎲", label: "Générer Salaire Alea" },
     { path: "/liste-salaire", icon: "📋", label: "Liste Salaires" },
-    { path: "/gen-paiement", icon: "📋", label: "Generer paiement" },
+    { path: "/gen-paiement", icon: "💵", label: "Paiement par mois" },
     { path: "/create-salaire", icon: "➕", label: "Créer Salaire" },
   ];
 
