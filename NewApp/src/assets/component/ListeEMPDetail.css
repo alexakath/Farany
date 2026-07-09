@@ -1,0 +1,166 @@
+.emp-page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+}
+
+.emp-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.emp-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1f2430;
+    margin: 0;
+}
+
+.emp-count {
+    color: #8a8f9c;
+    font-size: 0.9rem;
+}
+
+.emp-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    border: 1px solid #e2e5ea;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    background: #fff;
+}
+
+.emp-search:focus {
+    border-color: #6c63ff;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+}
+
+.emp-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.emp-card {
+    background: #fff;
+    border: 1px solid #edeff2;
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    overflow: hidden;
+}
+
+.emp-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 24, 40, 0.08);
+    border-color: #dcdfe6;
+}
+
+.emp-card-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.emp-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.emp-avatar--photo {
+    object-fit: cover;
+}
+
+.emp-avatar--initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #6c63ff, #8f7bff);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.emp-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.emp-name {
+    font-size: 0.98rem;
+    color: #1f2430;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.emp-role {
+    font-size: 0.82rem;
+    color: #8a8f9c;
+}
+
+.emp-empty {
+    text-align: center;
+    padding: 48px 16px;
+    color: #8a8f9c;
+}
+
+.emp-error {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff5f5;
+    border: 1px solid #ffd6d6;
+    color: #b42323;
+}
+
+/* Skeleton loading state */
+.emp-card--skeleton {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.emp-avatar--skeleton {
+    background: #eceef1;
+    animation: emp-pulse 1.2s ease-in-out infinite;
+}
+
+.emp-skeleton-line {
+    height: 14px;
+    width: 60%;
+    border-radius: 6px;
+    background: #eceef1;
+    animation: emp-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes emp-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@media (max-width: 480px) {
+    .emp-grid {
+        grid-template-columns: 1fr;
+    }
+}

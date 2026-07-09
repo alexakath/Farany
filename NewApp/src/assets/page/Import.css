@@ -1,0 +1,197 @@
+/* ============================================
+   IMPORT - Page d'importation
+   ============================================ */
+
+.import-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.import-page .import-header {
+  margin-bottom: 28px;
+}
+
+.import-page .import-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary, #111827);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.import-page .import-header h1 .header-icon {
+  color: var(--primary, #2563eb);
+}
+
+.import-page .import-header p {
+  color: var(--text-secondary, #6b7280);
+  margin-top: 4px;
+}
+
+/* Zone d'upload */
+.upload-zone {
+  background: var(--bg-primary, #ffffff);
+  border-radius: var(--radius-lg, 16px);
+  padding: 28px;
+  border: 2px dashed var(--border-color, #e5e7eb);
+  transition: all 0.3s ease;
+}
+
+.upload-zone:hover {
+  border-color: var(--primary-light, #60a5fa);
+  background: var(--primary-bg, rgba(37, 99, 235, 0.02));
+}
+
+.upload-zone .upload-group {
+  margin-bottom: 20px;
+}
+
+.upload-zone .upload-group:last-child {
+  margin-bottom: 0;
+}
+
+.upload-zone .upload-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.upload-zone .upload-group .file-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.upload-zone .upload-group input[type="file"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border-color, #e5e7eb);
+  border-radius: var(--radius-sm, 6px);
+  font-size: 14px;
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #111827);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.upload-zone .upload-group input[type="file"]:hover {
+  border-color: var(--text-light, #9ca3af);
+}
+
+.upload-zone .upload-group .file-name {
+  font-size: 13px;
+  color: var(--text-secondary, #6b7280);
+  padding: 4px 12px;
+  background: var(--bg-tertiary, #f3f4f6);
+  border-radius: var(--radius-sm, 6px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* Progression */
+.progress-bar-wrapper {
+  margin-top: 24px;
+  height: 6px;
+  background: var(--bg-tertiary, #f3f4f6);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-wrapper .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary, #2563eb), var(--secondary, #3b82f6));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* Actions */
+.import-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.import-actions .btn-import {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--primary, #2563eb), var(--secondary, #3b82f6));
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.import-actions .btn-import:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+}
+
+.import-actions .btn-import:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Console logs */
+.log-console {
+  margin-top: 24px;
+  background: #1e1e2e;
+  border-radius: var(--radius, 10px);
+  padding: 16px 20px;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+  max-height: 300px;
+  overflow-y: auto;
+  color: #e4e4e7;
+  border: 1px solid #2a2a3e;
+  line-height: 1.8;
+}
+
+.log-console .log-ok { color: #34d399; }
+.log-console .log-error { color: #f87171; }
+.log-console .log-warn { color: #fbbf24; }
+.log-console .log-info { color: #60a5fa; }
+.log-console .log-default { color: #d1d5db; }
+
+/* Responsive Import */
+@media (max-width: 768px) {
+  .import-page .import-header h1 {
+    font-size: 22px;
+  }
+
+  .upload-zone {
+    padding: 20px;
+  }
+
+  .upload-zone .upload-group .file-input-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .upload-zone .upload-group .file-name {
+    max-width: 100%;
+  }
+
+  .import-actions {
+    flex-direction: column;
+  }
+
+  .import-actions .btn-import {
+    width: 100%;
+    justify-content: center;
+  }
+}

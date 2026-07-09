@@ -1,0 +1,301 @@
+/* ============================================
+   RESET - Page de réinitialisation
+   ============================================ */
+
+.reset-page {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.reset-page .reset-header {
+  margin-bottom: 28px;
+}
+
+.reset-page .reset-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary, #111827);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reset-page .reset-header h1 .header-icon {
+  color: var(--danger, #ef4444);
+}
+
+.reset-page .reset-header p {
+  color: var(--text-secondary, #6b7280);
+  margin-top: 4px;
+}
+
+/* Progress */
+.reset-progress {
+  margin-bottom: 24px;
+  height: 6px;
+  background: var(--bg-tertiary, #f3f4f6);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.reset-progress .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--danger, #ef4444), #dc2626);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* Avertissement */
+.reset-warning {
+  padding: 16px 20px;
+  background: var(--warning-bg, rgba(245, 158, 11, 0.1));
+  border: 1px solid var(--warning, #f59e0b);
+  border-radius: var(--radius, 10px);
+  color: var(--warning, #f59e0b);
+  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.reset-warning .warning-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.reset-warning strong {
+  color: var(--text-primary, #111827);
+}
+
+/* Liste des entités */
+.entity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.entity-group {
+  margin-bottom: 12px;
+}
+
+.entity-group .group-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-light, #9ca3af);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+}
+
+/* Checkbox card */
+.entity-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg-primary, #ffffff);
+  border: 1.5px solid var(--border-color, #e5e7eb);
+  border-radius: var(--radius, 10px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.entity-checkbox:hover {
+  border-color: var(--text-light, #9ca3af);
+  background: var(--bg-tertiary, #f3f4f6);
+}
+
+.entity-checkbox.checked {
+  border-color: var(--danger, #ef4444);
+  background: var(--danger-bg, rgba(239, 68, 68, 0.05));
+}
+
+.entity-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--danger, #ef4444);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.entity-checkbox .entity-info {
+  flex: 1;
+}
+
+.entity-checkbox .entity-info .entity-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+}
+
+.entity-checkbox .entity-info .entity-desc {
+  font-size: 13px;
+  color: var(--text-secondary, #6b7280);
+}
+
+.entity-checkbox .entity-info .entity-deps {
+  font-size: 12px;
+  color: var(--warning, #f59e0b);
+  margin-top: 4px;
+}
+
+.entity-checkbox .entity-status {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 12px;
+  border-radius: 12px;
+}
+
+.entity-status.idle {
+  display: none;
+}
+
+.entity-status.running {
+  background: var(--primary-bg, rgba(99, 102, 241, 0.1));
+  color: var(--primary, #6366f1);
+}
+
+.entity-status.done {
+  background: var(--success-bg, rgba(16, 185, 129, 0.1));
+  color: var(--success, #10b981);
+}
+
+.entity-status.error {
+  background: var(--danger-bg, rgba(239, 68, 68, 0.1));
+  color: var(--danger, #ef4444);
+}
+
+/* Confirmation */
+.reset-confirm {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: var(--bg-tertiary, #f3f4f6);
+  border-radius: var(--radius, 10px);
+  margin-bottom: 20px;
+}
+
+.reset-confirm input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--danger, #ef4444);
+  cursor: pointer;
+}
+
+.reset-confirm label {
+  font-size: 14px;
+  color: var(--text-secondary, #6b7280);
+  cursor: pointer;
+  margin: 0;
+}
+
+.reset-confirm label strong {
+  color: var(--text-primary, #111827);
+}
+
+/* Actions */
+.reset-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.reset-actions .btn-reset {
+  padding: 10px 24px;
+  background: var(--danger, #ef4444);
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-actions .btn-reset:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+}
+
+.reset-actions .btn-reset:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reset-actions .btn-outline {
+  padding: 10px 18px;
+  background: transparent;
+  border: 1.5px solid var(--border-color, #e5e7eb);
+  border-radius: var(--radius-sm, 6px);
+  color: var(--text-secondary, #6b7280);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reset-actions .btn-outline:hover:not(:disabled) {
+  background: var(--bg-tertiary, #f3f4f6);
+  border-color: var(--text-secondary, #6b7280);
+}
+
+.reset-actions .btn-outline:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.reset-actions .selected-count {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text-secondary, #6b7280);
+}
+
+/* Responsive Reset */
+@media (max-width: 768px) {
+  .reset-page .reset-header h1 {
+    font-size: 22px;
+  }
+
+  .entity-checkbox {
+    padding: 12px 14px;
+  }
+
+  .entity-checkbox .entity-status {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .reset-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .reset-actions .selected-count {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .reset-actions .btn-reset,
+  .reset-actions .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+}

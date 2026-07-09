@@ -1,0 +1,127 @@
+/* ============================================
+   DASHBOARD - Page principale
+   ============================================ */
+
+.dashboard-page {
+  padding: 0;
+}
+
+.dashboard-page .page-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-page .page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary, #111827);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dashboard-page .page-header h1 .header-badge {
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--primary-bg, rgba(99, 102, 241, 0.1));
+  color: var(--primary, #6366f1);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.dashboard-page .page-header p {
+  color: var(--text-secondary, #6b7280);
+  margin-top: 4px;
+}
+
+/* Statistiques */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--bg-primary, #ffffff);
+  border-radius: var(--radius, 10px);
+  padding: 20px 24px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  border-color: var(--primary-light, #818cf8);
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0,0,0,0.1));
+  transform: translateY(-2px);
+}
+
+.stat-card .stat-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.stat-card .stat-number {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary, #6366f1);
+}
+
+.stat-card .stat-label {
+  font-size: 13px;
+  color: var(--text-secondary, #6b7280);
+  margin-top: 4px;
+}
+
+/* Sections Dashboard */
+.dashboard-section {
+  background: var(--bg-primary, #ffffff);
+  border-radius: var(--radius-lg, 16px);
+  padding: 24px 28px;
+  border: 1px solid var(--border-color, #e5e7eb);
+  margin-bottom: 24px;
+}
+
+.dashboard-section .section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-section .section-title .title-icon {
+  color: var(--primary, #6366f1);
+}
+
+/* Graphiques containers */
+.chart-container {
+  min-height: 300px;
+  padding: 16px 0;
+}
+
+/* Responsive Dashboard */
+@media (max-width: 768px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-section {
+    padding: 16px 18px;
+  }
+
+  .dashboard-page .page-header h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card .stat-number {
+    font-size: 24px;
+  }
+}

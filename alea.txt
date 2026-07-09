@@ -1,0 +1,23 @@
+cree une page generer paiement 
+meme filtre que filtre genererer salaire alea pour les employes
+entree montant 
+mois annee montant et un seul bouton 
+avec un bouton payer
+donc y a un ordre 
+ceci d abord paye et choisir payer ceci 
+filtre 1 mois et annee
+la 1er date qu on paye en premier en regardant 
+un autre champ poste priorite
+l intervalle de salaire
+ex:on choisi d abord le post genre police et on paye d abord police
+post priorite ensuite date   
+et le salaire qu on va partager
+mois annee montant et un seul bouton 
+ex:intervalle 1 a 3 ,5 a 10 
+on prend d abord 1 a 3 car c est la 1er date salaire
+afficher en bas le salaire et le paiement fait relier 
+avec des employer concerner 
+verification si y a deja montant paye depuis l import
+ex:j ajoute 300 meme y avait deja 200
+on a plus besoin de filtre employer
+
