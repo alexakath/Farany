@@ -9,6 +9,9 @@ function GenererSalAleaPopup({ isOpen, onClose, onSubmit, userCount }) {
         pourcentage: "",
         mois: "",
         annee: "",
+        travailleSamedi: false,
+        travailleDimanche: false,
+        pourcentageWeekend: "",
     });
 
     if (!isOpen) return null;
@@ -16,7 +19,10 @@ function GenererSalAleaPopup({ isOpen, onClose, onSubmit, userCount }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(inputs);
-        setInputs({ salaireJour: "", pourcentage: "", mois: "", annee: "" });
+        setInputs({
+            salaireJour: "", pourcentage: "", mois: "", annee: "",
+            travailleSamedi: false, travailleDimanche: false, pourcentageWeekend: "",
+        });
     };
 
     return (
@@ -91,6 +97,42 @@ function GenererSalAleaPopup({ isOpen, onClose, onSubmit, userCount }) {
                             onChange={(e) => setInputs({ ...inputs, annee: e.target.value })}
                         />
                     </div>
+
+                    {/* Travail le weekend */}
+                    <div>
+                        <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <input
+                                type="checkbox"
+                                checked={inputs.travailleSamedi}
+                                onChange={(e) => setInputs({ ...inputs, travailleSamedi: e.target.checked })}
+                            />
+                            Travaille le samedi
+                        </label>
+                    </div>
+
+                    <div>
+                        <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <input
+                                type="checkbox"
+                                checked={inputs.travailleDimanche}
+                                onChange={(e) => setInputs({ ...inputs, travailleDimanche: e.target.checked })}
+                            />
+                            Travaille le dimanche
+                        </label>
+                    </div>
+
+                    {(inputs.travailleSamedi || inputs.travailleDimanche) && (
+                        <div>
+                            <label style={{ display: "block", marginBottom: "5px" }}>Majoration weekend (%) :</label>
+                            <input
+                                type="number"
+                                required
+                                style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+                                value={inputs.pourcentageWeekend}
+                                onChange={(e) => setInputs({ ...inputs, pourcentageWeekend: e.target.value })}
+                            />
+                        </div>
+                    )}
 
                     <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "10px" }}>
                         <button
