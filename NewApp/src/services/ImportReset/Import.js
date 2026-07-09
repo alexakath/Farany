@@ -137,16 +137,21 @@ export function useDolibarrImporter() {
       if (files.feuille2.data) {
         addLog("[2/2] Importation des enregistrements de salaires et paiements...", "info");
 
+        // Parsées en UTC (Date.UTC), pas en heure locale : Dolibarr tronque les
+        // timestamps en date calendaire côté UTC, donc un "T00:00:00" en heure
+        // locale (ex: UTC+3) décale la date d'un jour vers le passé une fois
+        // relue. Date.UTC garantit que la date calendaire envoyée est bien celle
+        // qui revient, quel que soit le fuseau horaire du navigateur.
         const toUnixTimestamp = (dateStr) => {
           if (!dateStr) return null;
           const clean = dateStr.trim();
           if (/^\d{2}\/\d{2}\/\d{2}$/.test(clean)) {
             const [d, m, y] = clean.split("/");
-            return Math.floor(new Date(`20${y}-${m}-${d}T00:00:00`).getTime() / 1000);
+            return Math.floor(Date.UTC(2000 + Number(y), Number(m) - 1, Number(d)) / 1000);
           }
           if (/^\d{2}\/\d{2}\/\d{4}$/.test(clean)) {
             const [d, m, y] = clean.split("/");
-            return Math.floor(new Date(`${y}-${m}-${d}T00:00:00`).getTime() / 1000);
+            return Math.floor(Date.UTC(Number(y), Number(m) - 1, Number(d)) / 1000);
           }
           return null;
         };

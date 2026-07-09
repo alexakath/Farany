@@ -84,7 +84,13 @@ function GenererSalaireAlea() {
     const handlePopupSubmit = async (formData) => {
         const filteredIds = filteredUsers.map((user) => user.id);
 
-        if (filteredIds.length === 0 || !formData.salaireJour || !formData.pourcentage || !formData.mois || !formData.annee) {
+        const majorationWeekendRequise =
+            (formData.travailleSamedi || formData.travailleDimanche) && !formData.pourcentageWeekend;
+
+        if (
+            filteredIds.length === 0 || !formData.salaireJour || !formData.pourcentage ||
+            !formData.mois || !formData.annee || majorationWeekendRequise
+        ) {
             setError("Veuillez remplir tous les champs et filtrer au moins un salarié.");
             return;
         }
@@ -95,13 +101,16 @@ function GenererSalaireAlea() {
 
         try {
             const requests = filteredIds.map(async (id) => {
-                // Calcul propre au user : jours non payés + majoration jour férié
+                // Calcul propre au user : jours non payés + majoration jour férié + weekend
                 const calcul = await SalariesService.calculerSalaireAlea(
                     id,
                     formData.mois,
                     formData.annee,
                     formData.salaireJour,
-                    formData.pourcentage
+                    formData.pourcentage,
+                    formData.travailleSamedi,
+                    formData.travailleDimanche,
+                    formData.pourcentageWeekend
                 );
 
                 // Pas de jour à générer pour ce user ce mois-ci -> on saute
@@ -113,8 +122,12 @@ function GenererSalaireAlea() {
                 const dateDebut = calcul.missingDates[0];
                 const dateFin = calcul.missingDates[calcul.nbTotal - 1];
 
+                const label = `Période du ${dateDebut} au ${dateFin}` +
+                    (calcul.nbFeries > 0 ? ` (${calcul.nbFeries} jour(s) férié(s) majoré(s))` : "") +
+                    (calcul.nbWeekendMajores > 0 ? ` (${calcul.nbWeekendMajores} jour(s) weekend majoré(s))` : "");
+
                 const salaryPayload = {
-                    label: `Période du ${dateDebut} au ${dateFin} (${calcul.nbFeries} jour(s) férié(s) majoré(s))`,
+                    label,
                     fk_user: Number(id),
                     datesp: toUnixTimestamp(dateDebut),
                     dateep: toUnixTimestamp(dateFin),

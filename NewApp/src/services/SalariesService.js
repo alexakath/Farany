@@ -414,18 +414,41 @@ const SalariesService = {
 
 
     // Calcule un salaire "Alea" : les jours du mois pas encore couverts par un
-    // salaire existant, avec majoration (%) sur les jours fériés.
-    // Retourne : { missingDates, nbTotal, nbFeries, total }
-    calculerSalaireAlea: async (userId, mois, annee, salaireJour, pourcentage) => {
+    // salaire existant, avec majoration (%) sur les jours fériés, et prise en
+    // compte optionnelle du samedi/dimanche comme jours travaillés (majoration
+    // weekend séparée). Si un jour est à la fois férié et weekend travaillé, on
+    // applique la plus grande des deux majorations, sans les cumuler.
+    // Retourne : { missingDates, nbTotal, nbFeries, nbWeekendMajores, total }
+    calculerSalaireAlea: async (
+        userId, mois, annee, salaireJour, pourcentageFerie,
+        travailleSamedi = false, travailleDimanche = false, pourcentageWeekend = 0
+    ) => {
         // 1. Jours du mois pas encore payés pour cet utilisateur
-        const missingDates = await SalariesService.getJourPasSalaire(userId, mois, annee);
-        const nbTotal = missingDates.length;
+        const missingDatesBrutes = await SalariesService.getJourPasSalaire(userId, mois, annee);
 
+        // Reconstruction d'une Date locale à partir de la clé "YYYY-MM-DD" pour lire
+        // le jour de la semaine — ne pas passer la chaîne brute à `new Date(...)`,
+        // ambigu selon les moteurs JS (voir DOC_PAIEMENT_PAR_MOIS.md section 12).
+        const dateDeKey = (key) => {
+            const [y, m, d] = key.split("-").map(Number);
+            return new Date(y, m - 1, d);
+        };
+
+        // 2. Un samedi/dimanche décoché n'est pas travaillé : on le retire du
+        // décompte des jours à payer.
+        const missingDates = missingDatesBrutes.filter((key) => {
+            const jour = dateDeKey(key).getDay(); // 0 = dimanche, 6 = samedi
+            if (jour === 6 && !travailleSamedi) return false;
+            if (jour === 0 && !travailleDimanche) return false;
+            return true;
+        });
+
+        const nbTotal = missingDates.length;
         if (nbTotal === 0) {
-            return { missingDates: [], nbTotal: 0, nbFeries: 0, total: 0 };
+            return { missingDates: [], nbTotal: 0, nbFeries: 0, nbWeekendMajores: 0, total: 0 };
         }
 
-        // 2. Jours fériés "modèles" en base → set de couples "mois-jour" (indépendant de l'année)
+        // 3. Jours fériés "modèles" en base → set de couples "mois-jour" (indépendant de l'année)
         const joursFeries = await JourFerieService.getAll();
         const feriesMoisJour = new Set(
             joursFeries.map((jf) => {
@@ -434,20 +457,33 @@ const SalariesService = {
             })
         );
 
-        // 3. Compter les jours non payés qui tombent un jour férié
+        // 4. Montant jour par jour : la plus grande des majorations applicables ce jour-là
+        const taux = Number(salaireJour);
+        let total = 0;
         let nbFeries = 0;
+        let nbWeekendMajores = 0;
+
         for (const key of missingDates) {
             const [, m, d] = key.split("-").map(Number); // clé "YYYY-MM-DD", m = 1-12
-            if (feriesMoisJour.has(`${m - 1}-${d}`)) nbFeries++;
+            const jour = dateDeKey(key).getDay();
+
+            const estFerie = feriesMoisJour.has(`${m - 1}-${d}`);
+            const estWeekendMajore =
+                (jour === 6 && travailleSamedi) || (jour === 0 && travailleDimanche);
+
+            if (estFerie) nbFeries++;
+            if (estWeekendMajore) nbWeekendMajores++;
+
+            let majorationPct = 0;
+            if (estFerie) majorationPct = Math.max(majorationPct, Number(pourcentageFerie));
+            if (estWeekendMajore) majorationPct = Math.max(majorationPct, Number(pourcentageWeekend));
+
+            total += taux * (1 + majorationPct / 100);
         }
 
-        // 4. Montant : jours normaux au tarif plein + jours fériés majorés de `pourcentage` %
-        const taux = Number(salaireJour);
-        const majoration = 1 + Number(pourcentage) / 100;
-        const nbNormaux = nbTotal - nbFeries;
-        const total = Math.round((nbNormaux * taux + nbFeries * taux * majoration) * 100) / 100;
+        total = Math.round(total * 100) / 100;
 
-        return { missingDates, nbTotal, nbFeries, total };
+        return { missingDates, nbTotal, nbFeries, nbWeekendMajores, total };
     },
 
     //

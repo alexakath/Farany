@@ -1,0 +1,40 @@
+/* ============================================
+   PAIEMENT PAR MOIS - Distribution d'un budget
+   ============================================ */
+
+.generer-paiement-page .page-header {
+  margin-bottom: 20px;
+}
+
+.generer-paiement-page .page-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary, #111827);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.generer-paiement-page .page-header h1 .header-icon {
+  color: var(--success, #10b981);
+}
+
+.generer-paiement-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+  padding: 14px 16px 0;
+}
+
+.table-wrapper tfoot .total-row td {
+  font-weight: 700;
+  border-top: 2px solid var(--border-color, #e5e7eb);
+  background: var(--bg-tertiary, #f3f4f6);
+  color: var(--text-primary, #111827);
+}
+
+@media (max-width: 768px) {
+  .table-wrapper table {
+    min-width: 700px;
+  }
+}
