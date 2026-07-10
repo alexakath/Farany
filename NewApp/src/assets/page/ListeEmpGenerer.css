@@ -20,15 +20,16 @@
 
 /* Filtres */
 .filters-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: minmax(180px, 1.4fr) minmax(130px, 0.8fr) minmax(150px, 1fr) repeat(2, minmax(105px, 0.6fr)) auto;
+  gap: 14px;
+  padding: 20px;
   background: var(--bg-primary, #ffffff);
   border-radius: var(--radius-lg, 16px);
   border: 1px solid var(--border-color, #e5e7eb);
   margin-bottom: 24px;
-  align-items: flex-end;
+  align-items: end;
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.05));
 }
 
 .filters-bar .filter-group {
@@ -47,6 +48,7 @@
 
 .filters-bar .filter-group input,
 .filters-bar .filter-group select {
+  height: 40px;
   padding: 8px 12px;
   border: 1.5px solid var(--border-color, #e5e7eb);
   border-radius: var(--radius-sm, 6px);
@@ -57,6 +59,14 @@
   transition: all 0.2s ease;
 }
 
+.filters-bar .filter-group-wide input {
+  min-width: 180px;
+}
+
+.filters-bar .filter-group-small input {
+  min-width: 96px;
+}
+
 .filters-bar .filter-group input:focus,
 .filters-bar .filter-group select:focus {
   outline: none;
@@ -65,7 +75,7 @@
 }
 
 .filters-bar .filter-group input[type="number"] {
-  width: 80px;
+  width: 100%;
 }
 
 .filters-bar .filter-actions {
@@ -73,9 +83,11 @@
   gap: 8px;
   margin-left: auto;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .filters-bar .filter-actions .btn-reset-filters {
+  height: 40px;
   padding: 8px 16px;
   background: transparent;
   border: 1.5px solid var(--border-color, #e5e7eb);
@@ -92,6 +104,7 @@
 }
 
 .filters-bar .filter-actions .btn-generate {
+  height: 40px;
   padding: 8px 20px;
   background: var(--success, #10b981);
   border: none;
@@ -114,6 +127,16 @@
   opacity: 0.4;
   cursor: not-allowed;
   transform: none;
+}
+
+.message-error {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.message-success {
+  color: #059669;
+  font-weight: 600;
 }
 
 /* Liste utilisateurs */
@@ -206,7 +229,7 @@
   }
 
   .filters-bar {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: stretch;
   }
 

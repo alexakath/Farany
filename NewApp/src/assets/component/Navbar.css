@@ -11,6 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.05));
   position: sticky;
   top: 0;
@@ -24,10 +25,20 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .navbar-front .nav-logo .logo-icon {
-  color: var(--primary, #2563eb);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--primary, #2563eb);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
 }
 
 .navbar-front .nav-links {
@@ -37,6 +48,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
 }
 
 .navbar-front .nav-links li a {
@@ -50,6 +62,7 @@
   font-weight: 500;
   text-decoration: none;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .navbar-front .nav-links li a:hover {
@@ -65,7 +78,21 @@
 }
 
 .navbar-front .nav-links li a .link-icon {
-  font-size: 16px;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--primary, #2563eb);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.navbar-front .nav-links li a.active .link-icon {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
 }
 
 /* --- Navbar Back --- */
@@ -150,6 +177,10 @@
   .navbar-back {
     padding: 0 16px;
     height: 56px;
+  }
+
+  .navbar-front {
+    gap: 12px;
   }
 
   .navbar-front .nav-links li a span:not(.link-icon) {

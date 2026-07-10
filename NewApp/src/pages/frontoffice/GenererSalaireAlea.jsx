@@ -23,12 +23,15 @@ function GenererSalaireAlea() {
         maxHours: "",
     });
 
+    const resetFilters = () => {
+        setFilters({ searchName: "", gender: "", job: "", minHours: "", maxHours: "" });
+    };
+
     const toUnixTimestamp = (dateStr) => {
         if (!dateStr) return null;
         const timestamp = Date.parse(dateStr);
         return !isNaN(timestamp) ? Math.floor(timestamp / 1000) : null;
     };
-    
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -47,13 +50,13 @@ function GenererSalaireAlea() {
                                 const base64Image = await DocumentService.download("user", path);
                                 if (base64Image) photosMap[userId] = base64Image;
                             } catch (downloadErr) {
-                                console.warn(`Impossible de télécharger la photo pour le user ${userId}`, downloadErr);
+                                console.warn(`Impossible de telecharger la photo pour le user ${userId}`, downloadErr);
                             }
                         }
                         setUserPhotos(photosMap);
                     }
                 } catch (photoErr) {
-                    console.warn("Erreur lors de la récupération des photos", photoErr);
+                    console.warn("Erreur lors de la recuperation des photos", photoErr);
                 }
             } catch (err) {
                 setError(err.message);
@@ -79,8 +82,6 @@ function GenererSalaireAlea() {
         return matchesName && matchesGender && matchesJob && matchesHours;
     });
 
-    // Génération : pour chaque user filtré on calcule le montant avec majoration
-    // sur les jours fériés puis on crée le salaire (comme la génération existante).
     const handlePopupSubmit = async (formData) => {
         const filteredIds = filteredUsers.map((user) => user.id);
 
@@ -91,7 +92,7 @@ function GenererSalaireAlea() {
             filteredIds.length === 0 || !formData.salaireJour || !formData.pourcentage ||
             !formData.mois || !formData.annee || majorationWeekendRequise
         ) {
-            setError("Veuillez remplir tous les champs et filtrer au moins un salarié.");
+            setError("Veuillez remplir tous les champs et filtrer au moins un salarie.");
             return;
         }
 
@@ -101,7 +102,6 @@ function GenererSalaireAlea() {
 
         try {
             const requests = filteredIds.map(async (id) => {
-                // Calcul propre au user : jours non payés + majoration jour férié + weekend
                 const calcul = await SalariesService.calculerSalaireAlea(
                     id,
                     formData.mois,
@@ -113,18 +113,17 @@ function GenererSalaireAlea() {
                     formData.pourcentageWeekend
                 );
 
-                // Pas de jour à générer pour ce user ce mois-ci -> on saute
                 if (calcul.nbTotal === 0) {
-                    console.log(`User ${id} : aucun jour à générer pour ${formData.mois}/${formData.annee}`);
+                    console.log(`User ${id} : aucun jour a generer pour ${formData.mois}/${formData.annee}`);
                     return null;
                 }
 
                 const dateDebut = calcul.missingDates[0];
                 const dateFin = calcul.missingDates[calcul.nbTotal - 1];
 
-                const label = `Période du ${dateDebut} au ${dateFin}` +
-                    (calcul.nbFeries > 0 ? ` (${calcul.nbFeries} jour(s) férié(s) majoré(s))` : "") +
-                    (calcul.nbWeekendMajores > 0 ? ` (${calcul.nbWeekendMajores} jour(s) weekend majoré(s))` : "");
+                const label = `Periode du ${dateDebut} au ${dateFin}` +
+                    (calcul.nbFeries > 0 ? ` (${calcul.nbFeries} jour(s) ferie(s) majore(s))` : "") +
+                    (calcul.nbWeekendMajores > 0 ? ` (${calcul.nbWeekendMajores} jour(s) weekend majore(s))` : "");
 
                 const salaryPayload = {
                     label,
@@ -143,10 +142,10 @@ function GenererSalaireAlea() {
             const results = await Promise.all(requests);
             const crees = results.filter((r) => r !== null);
             setSuccess(true);
-            console.log(`${crees.length} salaire(s) généré(s) avec succès.`, crees);
+            console.log(`${crees.length} salaire(s) genere(s) avec succes.`, crees);
             setIsPopupOpen(false);
         } catch (err) {
-            setError(err.message || "Une erreur est survenue lors de la génération.");
+            setError(err.message || "Une erreur est survenue lors de la generation.");
         } finally {
             setLoading(false);
         }
@@ -157,31 +156,26 @@ function GenererSalaireAlea() {
     const DEFAULT_AVATAR = "https://www.w3schools.com/howto/img_avatar.png";
 
     return (
-        <div>
+        <div className="liste-emp-generer">
             <Navbar />
-            <h1>Générer salaire Alea</h1>
 
-            {/* FILTRES */}
-            <div style={{
-                display: "flex",
-                gap: "15px",
-                marginBottom: "20px",
-                padding: "15px",
-                backgroundColor: "#272c68",
-                borderRadius: "8px",
-                flexWrap: "wrap",
-            }}>
-                <div>
-                    <label>Nom : </label>
+            <div className="page-header">
+                <h1>Generer salaire Alea</h1>
+            </div>
+
+            <div className="filters-bar">
+                <div className="filter-group filter-group-wide">
+                    <label>Nom</label>
                     <input
                         type="text"
+                        placeholder="Rechercher un nom"
                         value={filters.searchName}
                         onChange={(e) => setFilters({ ...filters, searchName: e.target.value })}
                     />
                 </div>
 
-                <div>
-                    <label>Genre : </label>
+                <div className="filter-group">
+                    <label>Genre</label>
                     <select
                         value={filters.gender}
                         onChange={(e) => setFilters({ ...filters, gender: e.target.value })}
@@ -192,8 +186,8 @@ function GenererSalaireAlea() {
                     </select>
                 </div>
 
-                <div>
-                    <label>Poste : </label>
+                <div className="filter-group">
+                    <label>Poste</label>
                     <select
                         value={filters.job}
                         onChange={(e) => setFilters({ ...filters, job: e.target.value })}
@@ -205,79 +199,72 @@ function GenererSalaireAlea() {
                     </select>
                 </div>
 
-                <div>
-                    <label>Heures min : </label>
+                <div className="filter-group filter-group-small">
+                    <label>Heures min</label>
                     <input
                         type="number"
+                        min="0"
                         value={filters.minHours}
                         onChange={(e) => setFilters({ ...filters, minHours: e.target.value })}
-                        style={{ width: "70px" }}
                     />
                 </div>
-                <div>
-                    <label>Heures max : </label>
+
+                <div className="filter-group filter-group-small">
+                    <label>Heures max</label>
                     <input
                         type="number"
+                        min="0"
                         value={filters.maxHours}
                         onChange={(e) => setFilters({ ...filters, maxHours: e.target.value })}
-                        style={{ width: "70px" }}
                     />
                 </div>
 
-                <button
-                    onClick={() => setFilters({ searchName: "", gender: "", job: "", minHours: "", maxHours: "" })}
-                >
-                    Réinitialiser
-                </button>
+                <div className="filter-actions">
+                    <button type="button" className="btn-reset-filters" onClick={resetFilters}>
+                        Reinitialiser
+                    </button>
 
-                <button
-                    onClick={() => setIsPopupOpen(true)}
-                    disabled={filteredUsers.length === 0}
-                    style={{
-                        backgroundColor: filteredUsers.length === 0 ? "#ccc" : "#4CAF50",
-                        color: "white",
-                        padding: "6px 12px",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: filteredUsers.length === 0 ? "not-allowed" : "pointer",
-                        fontWeight: "bold",
-                    }}
-                >
-                    Générer Salaire Alea ({filteredUsers.length})
-                </button>
+                    <button
+                        type="button"
+                        className="btn-generate"
+                        onClick={() => setIsPopupOpen(true)}
+                        disabled={filteredUsers.length === 0}
+                    >
+                        Generer Salaire Alea ({filteredUsers.length})
+                    </button>
+                </div>
             </div>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {success && <p style={{ color: "green" }}>Salaires générés avec succès !</p>}
+            {error && <p className="message-error">{error}</p>}
+            {success && <p className="message-success">Salaires generes avec succes !</p>}
 
-            {/* LISTE */}
             {filteredUsers.length === 0 ? (
-                <p>Aucun utilisateur trouvé.</p>
+                <div className="empty-state">
+                    <h3>Aucun utilisateur trouve.</h3>
+                </div>
             ) : (
-                <ul>
+                <div className="user-grid">
                     {filteredUsers.map((user) => (
-                        <li key={user.id} style={{ marginBottom: "15px", listStyle: "none" }}>
+                        <article key={user.id} className="user-card">
                             <img
                                 src={userPhotos[user.id] || DEFAULT_AVATAR}
                                 alt="avatar"
-                                style={{
-                                    width: "60px",
-                                    height: "60px",
-                                    borderRadius: "50%",
-                                    objectFit: "cover",
-                                    marginRight: "10px",
-                                }}
+                                className="user-avatar"
                             />
-                            <div style={{ display: "inline-block" }}>
-                                <strong>{user.lastname}</strong>
-                                <p>Ref: {user.ref_employee}</p>
-                                <p>Heures: {user.weeklyhours} h</p>
-                                <p>Genre: {user.gender}</p>
-                                <p>Poste: {user.job}</p>
+                            <div className="user-info">
+                                <div className="user-name">{user.lastname}</div>
+                                <div className="user-detail">
+                                    <span><span className="label">Ref:</span> {user.ref_employee}</span>
+                                    <span><span className="label">Heures:</span> {user.weeklyhours} h</span>
+                                </div>
+                                <div className="user-detail">
+                                    <span><span className="label">Genre:</span> {user.gender}</span>
+                                    <span><span className="label">Poste:</span> {user.job}</span>
+                                </div>
                             </div>
-                        </li>
+                        </article>
                     ))}
-                </ul>
+                </div>
             )}
 
             <GenererSalAleaPopup
